@@ -86,11 +86,11 @@ remotes::install_github("AlbertoAlmuinha/neuralprophet")
 Next, you’ll need to set up a Python Environment that contains at a
 minimum:
 
--   `neuralprophet`
--   `pillow`
--   `pandas`
--   `numpy`
--   `torch`
+-   `neuralprophet==0.2.7`
+-   `pillow==8.3.0`
+-   `pandas==1.2.5`
+-   `numpy==1.21.0`
+-   `torch==1.9.0`
 
 The python environment then needs to be activated with `reticulate`.
 
@@ -152,11 +152,6 @@ modeltime_table(
 
 Python Environment setup is always fun. Here are a few recommendations
 if you run into an issue.
-
--   **Check torch is installed in your environment** using
-    reticulate::py\_module\_available(“torch”). If **torch** is not
-    installed, go to your conda environment and run:
-    `pip install torch==1.6.0 -f https://download.pytorch.org/whl/torch_stable.html`
 
 -   **Check to make sure Conda or Miniconda is available** using
     `reticulate::conda_version()`. If no conda version is returned, then
