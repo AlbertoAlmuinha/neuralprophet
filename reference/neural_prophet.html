@@ -254,6 +254,11 @@ The only possible value for this model is "regression".</p></td>
       <td><p>String 'linear' or 'logistic' to specify a linear or logistic trend.</p></td>
     </tr>
     <tr>
+      <th>user_changepoints</th>
+      <td><p>If a list of changepoints is supplied, n_changepoints and changepoints_range are ignored. This list is
+instead used to set the dates at which the trend rate is allowed to change.</p></td>
+    </tr>
+    <tr>
       <th>changepoint_num</th>
       <td><p>Number of potential changepoints to include for modeling trend.</p></td>
     </tr>
@@ -527,7 +532,7 @@ fit(y ~ date + lagged_1 + lagged_2, data = df)</p>
 <span class='va'>model_fit</span> <span class='op'>&lt;-</span> <span class='va'>model_spec</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>date</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/month.html'>month</a></span><span class='op'>(</span><span class='va'>date</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
         data <span class='op'>=</span> <span class='fu'><a href='https://rsample.tidymodels.org/reference/initial_split.html'>training</a></span><span class='op'>(</span><span class='va'>splits</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in pkg.env$nprophet$NeuralProphet(growth = growth, changepoints = changepoints,     n_changepoints = n_changepoints, changepoints_range = changepoints_range,     yearly_seasonality = yearly_seasonality, weekly_seasonality = weekly_seasonality,     daily_seasonality = daily_seasonality, seasonality_mode = seasonality_mode,     trend_reg = trend_reg, trend_reg_threshold = trend_reg_threshold,     seasonality_reg = seasonality_reg, n_forecasts = n_forecasts,     n_lags = n_lags, num_hidden_layers = num_hidden_layers, d_hidden = d_hidden,     ar_sparsity = ar_sparsity, learning_rate = learning_rate,     epochs = epochs, batch_size = batch_size, loss_func = loss_func,     train_speed = train_speed, impute_missing = impute_missing): attempt to apply non-function</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 0.004 0 0.005</span></div><div class='input'><span class='va'>model_fit</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in pkg.env$nprophet$NeuralProphet(growth = growth, changepoints = changepoints,     n_changepoints = n_changepoints, changepoints_range = changepoints_range,     yearly_seasonality = yearly_seasonality, weekly_seasonality = weekly_seasonality,     daily_seasonality = daily_seasonality, seasonality_mode = seasonality_mode,     trend_reg = trend_reg, trend_reg_threshold = trend_reg_threshold,     seasonality_reg = seasonality_reg, n_forecasts = n_forecasts,     n_lags = n_lags, num_hidden_layers = num_hidden_layers, d_hidden = d_hidden,     ar_sparsity = ar_sparsity, learning_rate = learning_rate,     epochs = epochs, batch_size = batch_size, loss_func = loss_func,     train_speed = train_speed, impute_missing = impute_missing): attempt to apply non-function</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 0.005 0 0.006</span></div><div class='input'><span class='va'>model_fit</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'model_fit' not found</span></div><div class='input'>
 </div></pre>
   </div>
