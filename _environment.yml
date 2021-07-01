@@ -1,0 +1,13 @@
+name: nprophet
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pip
+  - pip:
+    - pillow
+    - matplotlib
+    - numpy
+    - pandas
+    - neuralprophet

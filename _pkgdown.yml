@@ -1,0 +1,89 @@
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-76139189-2
+
+navbar:
+  title: "modeltime.gluonts"
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Getting Started"
+      href: articles/getting-started.html
+    - text: "Articles"
+      href: articles/index.html
+      menu:
+        - text: "Start Here"
+        - text: 'Getting Started'
+          href: articles/getting-started.html
+        - text: '---'
+        - text: "Advanced"
+        - text: 'Managing GluonTS Environments'
+          href: articles/managing-envs.html
+        - text: 'Using GPUs with GluonTS'
+          href: articles/using-gpus.html
+    - text: "API"
+      href: reference/index.html
+      menu:
+        - text: 'API Functions'
+        - icon: fa-home
+          text: 'Function Reference'
+          href: reference/index.html
+        - text: '---'
+        - text: 'Change History'
+        - text: "News"
+          href: news/index.html
+    - text: "Ecosystem"
+      menu:
+        - text: 'Forecast'
+        - text: 'Modeltime (Forecasting)'
+          href: https://business-science.github.io/modeltime/
+        - text: 'TimeTK (Time Series Analysis)'
+          href: https://business-science.github.io/timetk/
+        - text: "---"
+        - text: 'Improve'
+        - text: 'Modeltime Ensemble (Blending Forecasts)'
+          href: https://business-science.github.io/modeltime.ensemble/
+        - text: 'Modeltime Resample (Backtesting)'
+          href: https://business-science.github.io/modeltime.resample/
+        - text: "---"
+        - text: 'Scale'
+        - text: 'Modeltime H2O (AutoML)'
+          href: https://business-science.github.io/modeltime.h2o/
+        - text: 'Modeltime GluonTS (Deep Learning)'
+          href: https://business-science.github.io/modeltime.gluonts/
+    - icon: fas fa-graduation-cap
+      text: "Learn"
+      href: https://university.business-science.io/p/ds4b-203-r-high-performance-time-series-forecasting/
+
+  right:
+    - icon: fab fa-github
+      href: https://github.com/business-science/modeltime.gluonts
+
+reference:
+  - title: Installation
+    contents:
+    - install_gluonts
+  - title: GluonTS Algorithm Integrations
+    desc: The main algorithms that have been integrated with modeltime.
+    contents:
+    - deep_ar
+    - nbeats
+  - title: Saving and Loading Models
+    desc: The `parsnip`-adjacent algorithms that implement time series models.
+    contents:
+    - save_gluonts_model
+  - title: Dials Tuning Parameters
+    desc: Tuning parameters for various deep learning models
+    contents:
+    - nbeats_params
+  - title: GluonTS Helpers
+    contents:
+    - to_gluon_list_dataset
+    - as_pandas_timestamp
+
+repo:
+  url:
+    home: https://github.com/business-science/modeltime.gluonts
+    source: https://github.com/business-science/modeltime.gluonts/blob/master/
+    issue: https://github.com/business-science/modeltime.gluonts/issues/
