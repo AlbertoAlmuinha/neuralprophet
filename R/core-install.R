@@ -41,18 +41,19 @@ install_nprophet <- function() {
     method <- "conda"
 
     default_pkgs <- c(
-        "pillow==8.2.0",
+        "pillow==8.3.0",
         "matplotlib==3.4.2",
-        "numpy==1.19.2",
+        "numpy==1.21.0",
         "pandas==1.2.5",
+        "torch==1.9.0",
         "neuralprophet==0.2.7"
     )
 
-    reticulate::conda_create("nprophet", python_version = "3.7.7")
+    #reticulate::conda_create("nprophet", python_version = "3.7.7")
 
-    os <- reticulate::import("os")
+    #os <- reticulate::import("os")
 
-    os$system("pip install torch==1.6.0 -f https://download.pytorch.org/whl/torch_stable.html")
+    #os$system("pip install torch==1.6.0 -f https://download.pytorch.org/whl/torch_stable.html")
 
     cli::cli_process_start("Installing NeuralProphet python dependencies...")
     message("\n")

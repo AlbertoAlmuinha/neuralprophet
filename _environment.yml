@@ -6,9 +6,9 @@ channels:
 dependencies:
   - pip
   - pip:
-    - pillow
-    - matplotlib
-    - numpy
-    - pandas
-    - torch
-    - neuralprophet
+    - pillow==8.3.0
+    - matplotlib==3.4.2
+    - numpy==1.21.0
+    - pandas==1.2.5
+    - torch==1.9.0
+    - neuralprophet==0.2.7
