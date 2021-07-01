@@ -227,11 +227,11 @@
 <a href="#step-2---python-environment-setup" class="anchor"></a>Step 2 - Python Environment Setup</h3>
 <p>Next, you’ll need to set up a Python Environment that contains at a minimum:</p>
 <ul>
-<li><code>neuralprophet</code></li>
-<li><code>pillow</code></li>
-<li><code>pandas</code></li>
-<li><code>numpy</code></li>
-<li><code>torch</code></li>
+<li><code>neuralprophet==0.2.7</code></li>
+<li><code>pillow==8.3.0</code></li>
+<li><code>pandas==1.2.5</code></li>
+<li><code>numpy==1.21.0</code></li>
+<li><code>torch==1.9.0</code></li>
 </ul>
 <p>The python environment then needs to be activated with <code>reticulate</code>.</p>
 <p><strong>Fast Setup</strong></p>
@@ -288,7 +288,6 @@
 <a href="#troubleshooting-installation" class="anchor"></a>Troubleshooting Installation</h2>
 <p>Python Environment setup is always fun. Here are a few recommendations if you run into an issue.</p>
 <ul>
-<li><p><strong>Check torch is installed in your environment</strong> using reticulate::py_module_available(“torch”). If <strong>torch</strong> is not installed, go to your conda environment and run: <code>pip install torch==1.6.0 -f https://download.pytorch.org/whl/torch_stable.html</code></p></li>
 <li><p><strong>Check to make sure Conda or Miniconda is available</strong> using <code><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">reticulate::conda_version()</a></code>. If no conda version is returned, then use <code><a href="https://rdrr.io/pkg/reticulate/man/install_miniconda.html">reticulate::install_miniconda()</a></code> to install Miniconda (recommended vs full Aniconda). Then (re-)run <code>install_gluonts()</code>.</p></li>
 <li><p><strong>Check if Neural Prophet (Python) is available</strong> using <code><a href="https://rdrr.io/pkg/reticulate/man/py_module_available.html">reticulate::py_module_available("neuralprophet")</a></code>. If this returns <code>TRUE</code>, then your installation has succeeded in building the environment, but you may have other issues like missing C++ build tools (next).</p></li>
 <li><p><strong>Windows 10 error: Microsoft Visual C++ is required.</strong> <a href="https://github.com/business-science/modeltime.gluonts/issues/4">Here are the instructions for installing the C++ tools needed.</a></p></li>
