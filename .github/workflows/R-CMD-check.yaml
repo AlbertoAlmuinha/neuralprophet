@@ -69,11 +69,11 @@ jobs:
           pak::pkg_system_requirements("rcmdcheck", execute = TRUE)
         shell: Rscript {0}
 
-      - name: Install miniconda r-gluonts env
+      - name: Install miniconda nprophet env
         uses: conda-incubator/setup-miniconda@v2
         with:
-          activate-environment: r-gluonts
-          python-version: 3.6
+          activate-environment: nprophet
+          python-version: 3.7.7
           environment-file: _environment.yml
 
       - name: Install dependencies
