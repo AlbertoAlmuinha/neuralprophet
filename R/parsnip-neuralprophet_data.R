@@ -34,6 +34,15 @@ make_neuralprophet <- function() {
     parsnip::set_model_arg(
         model        = model,
         eng          = engine,
+        parsnip      = "user_changepoints",
+        original     = "changepoints",
+        func         = list(pkg = "neuralprophet", fun = "user_changepoints"),
+        has_submodel = FALSE
+    )
+
+    parsnip::set_model_arg(
+        model        = model,
+        eng          = engine,
         parsnip      = "changepoint_num",
         original     = "n_changepoints",
         func         = list(pkg = "modeltime", fun = "changepoint_num"),

@@ -209,7 +209,7 @@
 #' model_fit
 #'
 #' @export
-neural_prophet <- function(mode = "regression", growth = NULL, changepoint_num = NULL, changepoint_range = NULL,
+neural_prophet <- function(mode = "regression", growth = NULL, user_changepoints = NULL, changepoint_num = NULL, changepoint_range = NULL,
                           seasonality_yearly = NULL, seasonality_weekly = NULL, seasonality_daily = NULL,
                           season = NULL, trend_reg = NULL, trend_reg_threshold = NULL, seasonality_mode = NULL,
                           num_hidden_layers = NULL, d_hidden = NULL, ar_sparsity = NULL, learn_rate = NULL,
@@ -220,6 +220,7 @@ neural_prophet <- function(mode = "regression", growth = NULL, changepoint_num =
 
         # Prophet
         growth                    = rlang::enquo(growth),
+        user_changepoints         = rlang::enquo(user_changepoints),
         changepoint_num           = rlang::enquo(changepoint_num),
         changepoint_range         = rlang::enquo(changepoint_range),
         seasonality_yearly        = rlang::enquo(seasonality_yearly),
@@ -271,7 +272,7 @@ print.neural_prophet <- function(x, ...) {
 #' @export
 #' @importFrom stats update
 update.neural_prophet <- function(object,
-                               parameters = NULL, growth = NULL, changepoint_num = NULL, changepoint_range = NULL,
+                               parameters = NULL, growth = NULL,user_changepoints = NULL, changepoint_num = NULL, changepoint_range = NULL,
                                seasonality_yearly = NULL, seasonality_weekly = NULL, seasonality_daily = NULL,
                                season = NULL, trend_reg = NULL, trend_reg_threshold = NULL, seasonality_mode = NULL,
                                num_hidden_layers = NULL, d_hidden = NULL, ar_sparsity = NULL, learn_rate = NULL,
@@ -288,6 +289,7 @@ update.neural_prophet <- function(object,
 
         # Prophet
         growth                    = rlang::enquo(growth),
+        user_changepoints         = rlang::enquo(user_changepoints),
         changepoint_num           = rlang::enquo(changepoint_num),
         changepoint_range         = rlang::enquo(changepoint_range),
         seasonality_yearly        = rlang::enquo(seasonality_yearly),
@@ -404,7 +406,8 @@ neural_prophet_fit_impl <- function(x, y,
     batch_size          <- if (is.null(batch_size)) {reticulate::py_none()}
     train_speed         <- if (is.null(train_speed)) {reticulate::py_none()}
 
-    #changepoints        <- if (!is.null(changepoints)) {reticulate::r_to_py(as.integer(changepoints))}
+    changepoints        <- if (!is.null(changepoints)) {reticulate::r_to_py(changepoints)}
+    n_changepoints      <- reticulate::r_to_py(as.integer(n_changepoints))
     changepoints_range  <- reticulate::r_to_py(changepoints_range)
     trend_reg           <- reticulate::r_to_py(as.integer(trend_reg))
     trend_reg_threshold <- if (!is.null(trend_reg_threshold)) {reticulate::r_to_py(trend_reg_threshold)}

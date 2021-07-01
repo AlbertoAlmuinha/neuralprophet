@@ -10,5 +10,5 @@ dependencies:
     - matplotlib==3.4.2
     - numpy==1.19.2
     - pandas==1.2.5
-    - torch==1.6.0
+    - torch==1.6.0 -f https://download.pytorch.org/whl/torch_stable.html
     - neuralprophet==0.2.7

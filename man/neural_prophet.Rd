@@ -7,6 +7,7 @@
 neural_prophet(
   mode = "regression",
   growth = NULL,
+  user_changepoints = NULL,
   changepoint_num = NULL,
   changepoint_range = NULL,
   seasonality_yearly = NULL,
