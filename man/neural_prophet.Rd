@@ -38,6 +38,9 @@ The only possible value for this model is "regression".}
 
 \item{growth}{String 'linear' or 'logistic' to specify a linear or logistic trend.}
 
+\item{user_changepoints}{If a list of changepoints is supplied, n_changepoints and changepoints_range are ignored. This list is
+instead used to set the dates at which the trend rate is allowed to change.}
+
 \item{changepoint_num}{Number of potential changepoints to include for modeling trend.}
 
 \item{changepoint_range}{Adjusts the flexibility of the trend component by limiting to a percentage of data

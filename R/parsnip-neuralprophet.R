@@ -7,6 +7,8 @@
 #'  different packages. Currently the only package is `neuralprophet` from Python through `reticulate`.
 #'
 #' @inheritParams modeltime::prophet_reg
+#' @param user_changepoints If a list of changepoints is supplied, n_changepoints and changepoints_range are ignored. This list is
+#' instead used to set the dates at which the trend rate is allowed to change.
 #' @param trend_reg  the trend rate changes can be regularized by setting trend_reg to a value greater zero. This is a useful feature that can be used to automatically detect relevant changepoints.
 #' @param trend_reg_threshold Threshold for the trend regularization
 #' @param seasonality_mode The default seasonality_mode is additive. This means that no heteroscedasticity is expected in the series in
