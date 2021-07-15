@@ -568,7 +568,7 @@ neural_prophet_fit_impl <- function(x, y,
     )
 
     # Model Description - Gets printed to describe the high-level model structure
-    desc <- paste0("Neural Prophet Model Specification")
+    desc <- paste0("Neural Prophet")
 
     # Create new model
     modeltime::new_modeltime_bridge(
