@@ -111,12 +111,14 @@ get_combination_value <- function(args){
 #' @export
 get_combination_df <- function(new_data, val, date_col, model, events_df, regressors_df){
 
+    var_future <- names(regressors_df)
+
     df <- switch(val,
-                 "1" = new_data %>% dplyr::select(ds, y, dplyr::contains("future_"), dplyr::contains("events"), dplyr::contains("lagged")),
-                 "2" = new_data %>% dplyr::select(ds, y,  dplyr::contains("future_"), dplyr::contains("lagged")),
-                 "3" = new_data %>% dplyr::select(ds, y,  dplyr::contains("future_"), dplyr::contains("events")),
+                 "1" = new_data %>% dplyr::select(ds, y, dplyr::all_of(var_future), dplyr::contains("events"), dplyr::contains("lagged")),
+                 "2" = new_data %>% dplyr::select(ds, y,  dplyr::all_of(var_future), dplyr::contains("lagged")),
+                 "3" = new_data %>% dplyr::select(ds, y,  dplyr::all_of(var_future), dplyr::contains("events")),
                  "4" = new_data %>% dplyr::select(ds, y,  dplyr::contains("events"), dplyr::contains("lagged")),
-                 "5" = new_data %>% dplyr::select(ds, y,  dplyr::contains("future_")),
+                 "5" = new_data %>% dplyr::select(ds, y,  dplyr::all_of(var_future)),
                  "6" = new_data %>% dplyr::select(ds, y,  dplyr::contains("events")),
                  "7" = new_data %>% dplyr::select(ds, y,  dplyr::contains("lagged")),
                  "8" = new_data %>% dplyr::select(ds, y)

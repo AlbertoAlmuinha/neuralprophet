@@ -206,7 +206,7 @@
 #'
 #' # Fit Spec
 #' model_fit <- model_spec %>%
-#'     fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
+#'     fit(log(value) ~ date,
 #'         data = training(splits))
 #' model_fit
 #'
@@ -401,12 +401,12 @@ neural_prophet_fit_impl <- function(x, y,
 
     args <- list(...)
 
-    d_hidden            <- if (is.null(d_hidden)) {reticulate::py_none()}
-    ar_sparsity         <- if (is.null(ar_sparsity)) {reticulate::py_none()}
-    learning_rate       <- if (is.null(learning_rate)) {reticulate::py_none()}
-    epochs              <- if (is.null(epochs)) {reticulate::py_none()}
-    batch_size          <- if (is.null(batch_size)) {reticulate::py_none()}
-    train_speed         <- if (is.null(train_speed)) {reticulate::py_none()}
+    d_hidden            <- if (is.null(d_hidden)) {reticulate::py_none()} else d_hidden
+    ar_sparsity         <- if (is.null(ar_sparsity)) {reticulate::py_none()} else ar_sparsity
+    learning_rate       <- if (is.null(learning_rate)) {reticulate::py_none()} else learning_rate
+    epochs              <- if (is.null(epochs)) {reticulate::py_none()} else as.integer(epochs)
+    batch_size          <- if (is.null(batch_size)) {reticulate::py_none()} else as.integer(batch_size)
+    train_speed         <- if (is.null(train_speed)) {reticulate::py_none()} else train_speed
 
     changepoints        <- if (!is.null(changepoints)) {reticulate::r_to_py(changepoints)}
     n_changepoints      <- reticulate::r_to_py(as.integer(n_changepoints))
@@ -449,6 +449,11 @@ neural_prophet_fit_impl <- function(x, y,
     idx_col   <- names(index_tbl)
     idx       <- timetk::tk_index(index_tbl)
 
+    # XREGS
+    # Clean names, get xreg recipe, process predictors
+    xreg_recipe <- modeltime::create_xreg_recipe(predictors, prepare = TRUE)
+    xreg_tbl    <- modeltime::juice_xreg_recipe(xreg_recipe, format = "tbl")
+
     # FIT
 
     # Construct Data Frame
@@ -487,7 +492,7 @@ neural_prophet_fit_impl <- function(x, y,
 
     if (any(names(args) == "add_events")){
 
-        df <- df %>% dplyr::bind_cols(predictors %>% dplyr::select(dplyr::contains("events")))
+        df <- df %>% dplyr::bind_cols(xreg_tbl %>% dplyr::select(dplyr::contains("events")))
 
         rlang::exec(fit_prophet$add_events, !!!args$add_events)
 
@@ -497,21 +502,30 @@ neural_prophet_fit_impl <- function(x, y,
 
     if (any(names(args) == "add_lagged_regressor")){
 
-        df <- df %>% dplyr::bind_cols(predictors %>% dplyr::select(dplyr::contains("lagged")))
+        df <- df %>% dplyr::bind_cols(xreg_tbl %>% dplyr::select(dplyr::contains("lagged")))
 
         rlang::exec(fit_prophet$add_lagged_regressor, !!!args$add_lagged_regressor)
 
     }
 
-    if (any(names(args) == "add_future_regressor")){
+    if (length(xreg_tbl)>0){
 
-        df <- df %>% dplyr::bind_cols(predictors %>% dplyr::select(dplyr::contains("future_")))
+        df <- df %>% dplyr::bind_cols(xreg_tbl %>% dplyr::select(-dplyr::all_of(dplyr::contains("events")),
+                                                                 -dplyr::all_of(dplyr::contains("lagged"))))
+
+        if (any(names(args) == "add_future_regressor")){
+            args$add_future_regressor$names <- names(df)[3:length(names(df))]
+        } else {
+            args["add_future_regressor"] <- list(names = names(df)[3:length(names(df))])
+        }
 
         rlang::exec(fit_prophet$add_future_regressor, !!!args$add_future_regressor)
 
-        regressors_df <- split_events(df, pattern = "future_") %>% split_convert()
+        regressors_df <- df[, names(df)[3:length(names(df))]]
 
     }
+
+
 
     if (any(names(args) == "add_future_regressor") & any(names(args) == "add_events")) {
         val <- "1"
@@ -561,10 +575,11 @@ neural_prophet_fit_impl <- function(x, y,
 
     # Extras - Pass on transformation recipe
     extras <- list(
-        components = preds,
-        args       = args,
-        date_col   = idx_col,
-        future_df  = future_df
+        components  = preds,
+        xreg_recipe = xreg_recipe,
+        args        = args,
+        date_col    = idx_col,
+        future_df   = future_df
     )
 
     # Model Description - Gets printed to describe the high-level model structure
@@ -609,30 +624,31 @@ neural_prophet_predict_impl <- function(object, new_data, ...) {
     model           <- object$models$model_1
     args            <- object$extras$args
     date_col        <- object$extras$date_col
+    xreg_recipe     <- object$extras$xreg_recipe
 
-    new_data <- new_data %>% dplyr::mutate(y = NA) %>% dplyr::rename(ds = date_col)
+    new_data1 <- new_data %>% dplyr::mutate(y = NA) %>% dplyr::rename(ds = date_col)
+
+    xreg_tbl <- modeltime::bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
 
 
     if (any(names(args) == "add_events")){
 
-        new_data_events <- new_data %>% dplyr::select(ds, dplyr::contains("events"))
+        new_data_events <- new_data1 %>% dplyr::select(ds, dplyr::contains("events"))
 
         events_future_df <- split_events(new_data_events) %>% split_convert()
 
     }
 
-    if (any(names(args) == "add_future_regressor")){
-
-        new_data_future_regressor <- new_data %>% dplyr::select(ds, dplyr::contains("future_"))
-
-        regressors_future_df <- split_events(new_data_future_regressor, pattern = "future_") %>% split_convert()
-
+    if (length(xreg_tbl)>0){
+        regressors_future_df <- xreg_tbl %>% dplyr::select(-dplyr::all_of(dplyr::contains("events")), -dplyr::all_of(dplyr::contains("lagged")))
+    } else {
+        regressors_future_df <- NULL
     }
 
     val <- get_combination_value(args)
 
     # Construct Future Frame
-    future_df <- get_combination_df(new_data, val, date_col, model, events_future_df, regressors_future_df)
+    future_df <- get_combination_df(new_data1, val, date_col, model, events_future_df, regressors_future_df)
 
     # PREDICTIONS
     preds_prophet_df <- model$predict(future_df) %>%

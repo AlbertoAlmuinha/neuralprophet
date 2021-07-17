@@ -268,7 +268,7 @@ model_spec <- neural_prophet(
 
 # Fit Spec
 model_fit <- model_spec \%>\%
-    fit(log(value) ~ date + as.numeric(date) + month(date, label = TRUE),
+    fit(log(value) ~ date,
         data = training(splits))
 model_fit
 
