@@ -372,7 +372,7 @@ translate.neural_prophet <- function(x, engine = x$engine, ...) {
 #'
 #' @export
 #' @importFrom stats frequency
-neural_prophet_fit_impl <- function(x, y,
+neural_prophet_fit_impl <- function(formula, data,
                                   growth = "linear",
                                   changepoints = NULL,
                                   n_changepoints = 5L,
@@ -423,12 +423,14 @@ neural_prophet_fit_impl <- function(x, y,
     #epochs              <- if (epochs != reticulate::py_none()) {reticulate::r_to_py(as.integer(epochs))}
     #batch_size          <- if (batch_size != reticulate::py_none()) {reticulate::r_to_py(as.integer(batch_size))}
 
+    y <- all.vars(formula)[1]
+    x <- attr(stats::terms(formula, data = data), "term.labels")
 
     # X & Y
     # Expect outcomes  = vector
     # Expect predictor = data.frame
-    outcome    <- y
-    predictors  <- x
+    outcome <- data[[y]]
+    predictors <- data %>% dplyr::select(dplyr::all_of(x))
 
     growth <- stringr::str_to_lower(growth)
     seasonality_mode <- stringr::str_to_lower(seasonality_mode)
@@ -585,7 +587,8 @@ neural_prophet_fit_impl <- function(x, y,
         date_col    = idx_col,
         future_df   = future_df,
         n_lags      = reticulate::py_to_r(n_lags),
-        n_forecasts = reticulate::py_to_r(n_forecasts)
+        n_forecasts = reticulate::py_to_r(n_forecasts),
+        value       = y
     )
 
     # Model Description - Gets printed to describe the high-level model structure
@@ -633,8 +636,9 @@ neural_prophet_predict_impl <- function(object, new_data, ...) {
     xreg_recipe     <- object$extras$xreg_recipe
     n_lags          <- object$extras$n_lags
     n_forecasts     <- object$extras$n_forecasts
+    value_col       <- object$extras$value
 
-    new_data1 <- new_data %>% dplyr::mutate(y = NA) %>% dplyr::rename(ds = date_col)
+    new_data1 <- new_data  %>% dplyr::rename(ds = date_col, y = value_col)
 
     xreg_tbl <- modeltime::bake_xreg_recipe(xreg_recipe, new_data, format = "tbl")
 
@@ -674,12 +678,11 @@ neural_prophet_predict_impl <- function(object, new_data, ...) {
         preds_prophet_df <- preds_prophet_df$yhat1 %>% purrr::map_dbl(convert_to_number)
         preds_prophet <- preds_prophet_df[(n_lags+1):(length(preds_prophet_df)-n_forecasts+2)]
 
+        preds_prophet <- c(rep(NA, n_lags-1), preds_prophet)
+
     } else {
         preds_prophet <- preds_prophet_df %>% dplyr::pull(yhat1)
     }
-
-
-
 
     return(preds_prophet)
 

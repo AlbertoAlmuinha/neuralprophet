@@ -252,8 +252,8 @@ make_neuralprophet <- function() {
         eng           = engine,
         mode          = "regression",
         value         = list(
-            interface = "data.frame",
-            protect   = c("x", "y"),
+            interface = "formula",
+            protect   = c("formula", "data"),
             func      = c(fun = "neural_prophet_fit_impl"),
             defaults  = list()
         )
