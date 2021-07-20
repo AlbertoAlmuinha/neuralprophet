@@ -358,8 +358,8 @@ translate.neural_prophet <- function(x, engine = x$engine, ...) {
 #' Bridge Prophet-Catboost Modeling function
 #'
 #' @inheritParams neural_prophet
-#' @param x Value
-#' @param y Value
+#' @param formula Value
+#' @param data Value
 #' @param changepoints changepoints
 #' @param n_changepoints n_changepoints
 #' @param changepoints_range changepoints_range
@@ -572,7 +572,7 @@ neural_prophet_fit_impl <- function(formula, data,
     )
 
     # Data - Start with index tbl and add .actual, .fitted, and .residuals columns
-    data <- preds %>% select(ds) %>%
+    data <- preds %>% dplyr::select(ds) %>%
         dplyr::mutate(
             .actual    =  preds$y,
             .fitted    =  preds$yhat1,

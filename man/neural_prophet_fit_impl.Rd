@@ -5,8 +5,8 @@
 \title{Bridge Prophet-Catboost Modeling function}
 \usage{
 neural_prophet_fit_impl(
-  x,
-  y,
+  formula,
+  data,
   growth = "linear",
   changepoints = NULL,
   n_changepoints = 5L,
@@ -35,9 +35,9 @@ neural_prophet_fit_impl(
 )
 }
 \arguments{
-\item{x}{Value}
+\item{formula}{Value}
 
-\item{y}{Value}
+\item{data}{Value}
 
 \item{growth}{String 'linear' or 'logistic' to specify a linear or logistic trend.}
 
