@@ -32,7 +32,7 @@ test_that("Neural Prophet: model fitting", {
 
     testthat::expect_s3_class(model_fit$fit$data, "tbl_df")
 
-    testthat::expect_equal(names(model_fit$fit$data)[1], "date")
+    testthat::expect_equal(names(model_fit$fit$data)[1], "ds")
     testthat::expect_equal(names(model_fit$fit$extras$components)[1], "ds")
     testthat::expect_equal(names(model_fit$fit$extras$components)[6], "season_weekly")
 
