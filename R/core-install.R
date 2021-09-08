@@ -32,28 +32,34 @@
 #'
 #'
 #' @export
-install_nprophet <- function() {
+install_nprophet <- function(fresh_install = FALSE) {
 
     if (!check_conda()) {
         return()
     }
 
+    if (fresh_install) {
+        cli::cli_alert_info("Removing conda env `nprophet` to setup for fresh install...")
+        reticulate::conda_remove("nprophet")
+    }
+
     method <- "conda"
+
+    message("\n")
+    cli::cli_alert_info("Installing torch dependencies...")
+    message("\n")
+
+    reticulate::conda_install(packages = "pytorch==1.6",
+                              envname = "nprophet",
+                              python_version = "3.7.7")
 
     default_pkgs <- c(
         "pillow==8.3.0",
         "matplotlib==3.4.2",
-        "numpy==1.21.0",
-        "pandas==1.2.5",
-        "torch==1.9.0",
+        "numpy",
+        "pandas==1.0.5",
         "neuralprophet==0.2.7"
     )
-
-    #reticulate::conda_create("nprophet", python_version = "3.7.7")
-
-    #os <- reticulate::import("os")
-
-    #os$system("pip install torch==1.6.0 -f https://download.pytorch.org/whl/torch_stable.html")
 
     cli::cli_process_start("Installing NeuralProphet python dependencies...")
     message("\n")
