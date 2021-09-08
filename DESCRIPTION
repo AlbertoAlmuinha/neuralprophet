@@ -3,8 +3,8 @@ Type: Package
 Title: 'Neural Prophet' Algorithm
 Version: 0.1.0
 Authors@R: c(
-    person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut", "cre")),
-    person("Alberto", "Almuiña", email = "albertogonzalezalmuinha@gmail.com", role = c("aut")),
+    person("Alberto", "Almuiña", email = "albertogonzalezalmuinha@gmail.com", role = c("aut", "cre")),
+    person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut")),
     person("Business Science", role = "cph")
     )
 Description: 
