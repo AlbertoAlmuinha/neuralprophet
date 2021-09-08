@@ -89,8 +89,8 @@ minimum:
 -   `neuralprophet==0.2.7`
 -   `pillow==8.3.0`
 -   `pandas==1.2.5`
--   `numpy==1.21.0`
--   `torch==1.9.0`
+-   `numpy`
+-   `pytorch==1.6`
 
 The python environment then needs to be activated with `reticulate`.
 
