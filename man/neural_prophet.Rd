@@ -216,6 +216,7 @@ fit(y ~ date + events_1 + events_2, data = df)
 To include Future Regressors correctly, the following conditions must be met:
 \itemize{
 \item Future Regressors variable names must contain \code{future_} in their name. For example: "future_one", "future_two".
+\item Any columns that aren't labeled "event_" or "lagged_" are added as Future Regressors (except date one).
 \item Pass a list called \code{add_future_regressor} through set_engine(). This list will define the characteristics of our future_regressors
 It should contain the elements contained in the \code{add_future_regressor} method in Python.
 \item Include future_regressors in the formula as external regressors

@@ -39,6 +39,7 @@ pkg.env$activated  <- FALSE
 # - CRAN comment: Cannot use <<- to modify Global env
 pkg.env$nprophet   <- NULL
 pkg.env$pd         <- NULL
+pkg.env$mpt        <- NULL
 
 # ONLOAD ----
 
@@ -54,6 +55,7 @@ pkg.env$pd         <- NULL
         try({
             pkg.env$nprophet <- reticulate::import("neuralprophet", delay_load = TRUE, convert = FALSE)
             pkg.env$pd       <- reticulate::import("pandas", delay_load = TRUE, convert = FALSE)
+            pkg.env$mpt      <- reticulate::import("matplotlib", delay_load = TRUE, convert = FALSE)
         }, silent = TRUE)
 
         if (is.null(pkg.env$nprophet)) dependencies_ok <- FALSE

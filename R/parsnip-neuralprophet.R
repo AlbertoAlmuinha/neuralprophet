@@ -590,7 +590,8 @@ neural_prophet_fit_impl <- function(formula, data,
         future_df   = future_df,
         n_lags      = reticulate::py_to_r(n_lags),
         n_forecasts = reticulate::py_to_r(n_forecasts),
-        value       = y
+        value       = y,
+        fit_prophet = fit_prophet
     )
 
     # Model Description - Gets printed to describe the high-level model structure
@@ -667,20 +668,20 @@ neural_prophet_predict_impl <- function(object, new_data, ...) {
     # PREDICTIONS
     preds_prophet_df <- model$predict(future_df) %>%
                          reticulate::py_to_r() %>%
-                         tibble::as_tibble() %>%
-                         dplyr::slice_max(n = dim(future_df)[1]-1, order_by = dplyr::desc(ds))
+                         tibble::as_tibble() #%>%
+                         #dplyr::slice_max(n = dim(future_df)[1]-1, order_by = dplyr::desc(ds))
 
-    convert_to_number <- function(x){
-        if (is.null(x)){99999} else {x}
+    convert_to_na <- function(x){
+        if (is.null(x)){NA} else {x}
     }
 
 
     # Return predictions as numeric vector
     if (n_lags > 0){
-        preds_prophet_df <- preds_prophet_df$yhat1 %>% purrr::map_dbl(convert_to_number)
-        preds_prophet <- preds_prophet_df[(n_lags+1):(length(preds_prophet_df)-n_forecasts+2)]
+        preds_prophet <- preds_prophet_df$yhat1 %>% purrr::map_dbl(convert_to_na)
+        #preds_prophet <- preds_prophet_df[(n_lags+1):(length(preds_prophet_df)-n_forecasts+2)]
 
-        preds_prophet <- c(rep(NA, n_lags-1), preds_prophet)
+        #preds_prophet <- c(rep(NA, n_lags), preds_prophet)
 
     } else {
         preds_prophet <- preds_prophet_df %>% dplyr::pull(yhat1)
