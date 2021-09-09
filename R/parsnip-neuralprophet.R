@@ -150,6 +150,8 @@
 #'
 #' - Future Regressors variable names must contain `future_` in their name. For example: "future_one", "future_two".
 #'
+#' - Any columns that aren't labeled "event_" or "lagged_" are added as Future Regressors (except date one).
+#'
 #' - Pass a list called `add_future_regressor` through set_engine(). This list will define the characteristics of our future_regressors
 #' It should contain the elements contained in the `add_future_regressor` method in Python.
 #'

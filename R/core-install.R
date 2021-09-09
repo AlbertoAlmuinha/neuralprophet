@@ -6,6 +6,10 @@
 #' named `nprophet`.
 #' - The neuralprophet R package will connect to the `nprophet` Python environment
 #'
+#' @param fresh_install Default: FALSE. If TRUE, this removes any previous “r-gluonts” environments, which can help
+#' in the case of errors. Caution: If you have added packages to this environment after a prior install, these
+#' packages will be removed.
+#'
 #' @details
 #'
 #' __Options for Connecting to Python__
