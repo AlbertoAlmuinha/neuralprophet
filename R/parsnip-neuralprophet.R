@@ -684,7 +684,9 @@ neural_prophet_predict_impl <- function(object, new_data, ...) {
         #preds_prophet <- c(rep(NA, n_lags), preds_prophet)
 
     } else {
-        preds_prophet <- preds_prophet_df %>% dplyr::pull(yhat1)
+        preds_prophet <- preds_prophet_df %>%
+            dplyr::slice_max(n = dim(future_df)[1]-1, order_by = dplyr::desc(ds)) %>%
+            dplyr::pull(yhat1)
     }
 
     return(preds_prophet)

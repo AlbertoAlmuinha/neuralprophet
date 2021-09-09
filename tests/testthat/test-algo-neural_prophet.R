@@ -45,7 +45,7 @@ test_that("Neural Prophet: model fitting", {
 
     # Predictions
     predictions_tbl <- model_fit %>%
-        modeltime_calibrate(testing(splits)) %>%
+        modeltime_calibrate(testing(splits), quiet = FALSE) %>%
         modeltime_forecast(new_data = testing(splits))
 
     # Structure
