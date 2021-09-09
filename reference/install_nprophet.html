@@ -221,8 +221,18 @@ named <code>nprophet</code>.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>install_nprophet</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>install_nprophet</span><span class='op'>(</span>fresh_install <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>fresh_install</th>
+      <td><p>Default: FALSE. If TRUE, this removes any previous “r-gluonts” environments, which can help
+in the case of errors. Caution: If you have added packages to this environment after a prior install, these
+packages will be removed.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -261,7 +271,7 @@ However, you can connect to virtual environment that you have created using
 
       <footer>
       <div class="copyright">
-  <p>Developed by Alberto Almuiña, Matt Dancho.</p>
+  <p>Developed by Alberto Almuiña.</p>
 </div>
 
 <div class="pkgdown">
